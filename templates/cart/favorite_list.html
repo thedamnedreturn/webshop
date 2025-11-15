@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Избранное - Интернет-магазин{% endblock %}
+
+{% block content %}
+<h1>Избранные товары</h1>
+
+{% if favorites %}
+<div class="row">
+    {% for favorite in favorites %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="{{ favorite.product.image.url }}" class="card-img-top" alt="{{ favorite.product.name }}" style="height: 200px; object-fit: cover;">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ favorite.product.name }}</h5>
+                <p class="card-text flex-grow-1">{{ favorite.product.description|truncatewords:20 }}</p>
+                <p class="card-text"><strong>{{ favorite.product.price }} руб.</strong></p>
+                <div class="mt-auto">
+                    <a href="{% url 'products:product_detail' favorite.product.id favorite.product.slug %}" class="btn btn-primary">
+                        Подробнее
+                    </a>
+                    <a href="{% url 'cart:favorite_remove' favorite.product.id %}" class="btn btn-outline-danger">
+                        Удалить
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center">
+    <h3>Список избранного пуст</h3>
+    <p>Добавьте товары в избранное, чтобы они отображались здесь.</p>
+</div>
+{% endif %}
+{% endblock %}

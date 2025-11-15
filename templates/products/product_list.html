@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Все товары{% endif %} - Интернет-магазин
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Сайдбар с категориями -->
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5>Категории</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li {% if not category %}class="fw-bold"{% endif %}>
+                        <a href="{% url 'products:product_list' %}" class="text-decoration-none">
+                            Все товары
+                        </a>
+                    </li>
+                    {% for cat in categories %}
+                    <li {% if category.slug == cat.slug %}class="fw-bold"{% endif %}>
+                        <a href="{% url 'products:product_list_by_category' cat.slug %}" class="text-decoration-none">
+                            {{ cat.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Список товаров -->
+    <div class="col-md-9">
+        <h1>{% if category %}{{ category.name }}{% else %}Все товары{% endif %}</h1>
+
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text flex-grow-1">{{ product.description|truncatewords:20 }}</p>
+                        <p class="card-text"><strong>${{ product.price }}</strong></p>
+                        <a href="{% url 'products:product_detail' product.id product.slug %}" class="btn btn-primary mt-auto">
+                            Подробнее
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-center">Товары не найдены.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

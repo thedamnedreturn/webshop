@@ -1,0 +1,485 @@
+/* ===== ULTIMATE СТИЛИ С АНИМАЦИЯМИ ===== */
+:root {
+    --neon-primary: #00f2fe;
+    --neon-secondary: #4facfe;
+    --neon-accent: #f093fb;
+    --neon-danger: #ff6b6b;
+    --neon-success: #51cf66;
+
+    --glow-primary: 0 0 20px rgba(0, 242, 254, 0.5);
+    --glow-secondary: 0 0 20px rgba(79, 172, 254, 0.5);
+    --glow-accent: 0 0 20px rgba(240, 147, 251, 0.5);
+}
+
+/* Глобальные анимации */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes float3d {
+    0%, 100% {
+        transform: translate3d(0, 0, 0) rotate3d(1, 1, 1, 0deg);
+    }
+    33% {
+        transform: translate3d(0, -10px, 0) rotate3d(1, 0, 0, 5deg);
+    }
+    66% {
+        transform: translate3d(0, -5px, 0) rotate3d(0, 1, 0, 5deg);
+    }
+}
+
+@keyframes neonPulse {
+    0%, 100% {
+        box-shadow: var(--glow-primary);
+        opacity: 1;
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(0, 242, 254, 0.8);
+        opacity: 0.8;
+    }
+}
+
+@keyframes textGlow {
+    0%, 100% {
+        text-shadow: 0 0 10px currentColor;
+    }
+    50% {
+        text-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+    }
+}
+
+@keyframes morphBackground {
+    0% {
+        background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+        background-size: 400% 400%;
+    }
+    25% {
+        background: linear-gradient(45deg, #764ba2, #f093fb, #f5576c, #667eea);
+        background-size: 400% 400%;
+    }
+    50% {
+        background: linear-gradient(45deg, #f093fb, #f5576c, #667eea, #764ba2);
+        background-size: 400% 400%;
+    }
+    75% {
+        background: linear-gradient(45deg, #f5576c, #667eea, #764ba2, #f093fb);
+        background-size: 400% 400%;
+    }
+    100% {
+        background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+        background-size: 400% 400%;
+    }
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Базовые стили */
+body {
+    font-family: 'Inter', 'SF Pro Display', -apple-system, sans-serif;
+    background: linear-gradient(-45deg, #0f0f0f, #1a1a2e, #16213e, #0f3460);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    color: #e2e8f0;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Частицы фона */
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--neon-primary);
+    border-radius: 50%;
+    animation: particleFloat linear infinite;
+    box-shadow: var(--glow-primary);
+}
+
+/* Ультра навигация */
+.navbar {
+    background: rgba(15, 15, 15, 0.8) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+    padding: 1rem 0;
+    position: relative;
+}
+
+.navbar::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent,
+        var(--neon-primary),
+        var(--neon-secondary),
+        var(--neon-accent),
+        transparent
+    );
+    animation: neonPulse 2s ease-in-out infinite;
+}
+
+.navbar-brand {
+    font-weight: 900;
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textGlow 3s ease-in-out infinite;
+    position: relative;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    margin: 0 0.5rem;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    overflow: hidden;
+}
+
+.navbar-nav .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.4), transparent);
+    transition: left 0.6s ease;
+}
+
+.navbar-nav .nav-link:hover::before {
+    left: 100%;
+}
+
+.navbar-nav .nav-link:hover {
+    transform: translateY(-3px) scale(1.05);
+    background: rgba(0, 242, 254, 0.1);
+    border-color: var(--neon-primary);
+    box-shadow: var(--glow-primary);
+    animation: neonPulse 1.5s ease-in-out infinite;
+}
+
+/* Герой секция с 3D эффектом */
+.hero-section {
+    background: rgba(15, 15, 15, 0.6);
+    backdrop-filter: blur(30px);
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    border-radius: 30px;
+    padding: 6rem 0;
+    margin: 3rem auto;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(0, 242, 254, 0.1),
+        rgba(79, 172, 254, 0.1),
+        rgba(240, 147, 251, 0.1),
+        transparent
+    );
+    animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.hero-section .display-4 {
+    font-weight: 900;
+    font-size: 4rem;
+    background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary), var(--neon-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textGlow 2s ease-in-out infinite, float3d 6s ease-in-out infinite;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* 3D карточки товаров */
+.product-card-3d {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+    cursor: pointer;
+}
+
+.product-card-3d::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--neon-primary), var(--neon-secondary), var(--neon-accent));
+    animation: neonPulse 3s ease-in-out infinite;
+}
+
+.product-card-3d:hover {
+    transform:
+        translateY(-20px)
+        rotateX(10deg)
+        rotateY(5deg)
+        scale(1.05);
+    box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        var(--glow-primary);
+}
+
+.product-card-3d .card-img-top {
+    height: 280px;
+    object-fit: cover;
+    transition: all 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+    filter: brightness(0.9);
+}
+
+.product-card-3d:hover .card-img-top {
+    transform: scale(1.2) rotate(2deg);
+    filter: brightness(1.1) contrast(1.1);
+}
+
+/* Неоновые кнопки */
+.btn-neon {
+    background: transparent;
+    border: 2px solid var(--neon-primary);
+    color: var(--neon-primary);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    animation: neonPulse 3s ease-in-out infinite;
+}
+
+.btn-neon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--neon-primary), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-neon:hover::before {
+    left: 100%;
+}
+
+.btn-neon:hover {
+    background: var(--neon-primary);
+    color: #0f0f0f;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow:
+        0 10px 30px rgba(0, 242, 254, 0.4),
+        var(--glow-primary);
+    animation: none;
+}
+
+/* Анимированная таблица */
+.table-hologram {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.table-hologram thead th {
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2));
+    color: var(--neon-primary);
+    font-weight: 700;
+    padding: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    position: relative;
+}
+
+.table-hologram thead th::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--neon-primary), var(--neon-secondary));
+    animation: neonPulse 2s ease-in-out infinite;
+}
+
+.table-hologram tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.table-hologram tbody tr:hover {
+    background: rgba(0, 242, 254, 0.1);
+    transform: translateX(10px);
+}
+
+/* Анимированные формы */
+.form-hologram .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    color: white;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+}
+
+.form-hologram .form-control:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--neon-primary);
+    box-shadow: var(--glow-primary);
+    transform: translateY(-3px);
+}
+
+.form-hologram .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Футер с анимацией */
+footer {
+    background: rgba(15, 15, 15, 0.9);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(0, 242, 254, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent,
+        var(--neon-primary),
+        var(--neon-secondary),
+        var(--neon-accent),
+        transparent
+    );
+    animation: neonPulse 3s ease-in-out infinite;
+}
+
+/* Параллакс эффекты */
+.parallax-section {
+    position: relative;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Загрузочные анимации */
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid var(--neon-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .hero-section .display-4 {
+        font-size: 2.5rem;
+    }
+
+    .product-card-3d:hover {
+        transform: translateY(-10px) scale(1.02);
+    }
+
+    .navbar-nav .nav-link {
+        margin: 0.25rem 0;
+        text-align: center;
+    }
+}
+
+/* Утилиты анимаций */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease;
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hover-lift {
+    transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}

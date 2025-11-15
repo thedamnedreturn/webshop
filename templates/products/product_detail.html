@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - Интернет-магазин{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+    </div>
+    <div class="col-md-6">
+        <h1>{{ product.name }}</h1>
+
+        <!-- КАТЕГОРИЯ -->
+        <p class="text-muted">
+            <strong>Категория:</strong>
+            <a href="{% url 'products:product_list_by_category' product.category.slug %}" class="text-decoration-none">
+                {{ product.category.name }}
+            </a>
+        </p>
+
+        <p class="lead">${{ product.price }}</p>
+        <p>{{ product.description }}</p>
+
+        {% if user.is_authenticated %}
+        <!-- ФОРМА ДЛЯ ДОБАВЛЕНИЯ В КОРЗИНУ С ВЫБОРОМ КОЛИЧЕСТВА -->
+        <form action="{% url 'cart:cart_add' product.id %}" method="post" class="mb-3">
+            {% csrf_token %}
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <label for="quantity" class="form-label"><strong>Количество:</strong></label>
+                </div>
+                <div class="col-auto">
+                    <input type="number" name="quantity" id="quantity" value="1" min="1" max="10"
+                           class="form-control" style="width: 100px;">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-success btn-lg">Добавить в корзину</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- КНОПКА ИЗБРАННОГО -->
+        <form action="{% url 'cart:favorite_add' product.id %}" method="post" class="mb-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-primary">
+                ❤️ Добавить в избранное
+            </button>
+        </form>
+        {% else %}
+        <div class="alert alert-info">
+            <p><a href="{% url 'users:login' %}">Войдите</a>, чтобы добавлять товары в корзину и избранное</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Блок отзывов -->
+<div class="row mt-5">
+    <div class="col-12">
+        <h3>Отзывы</h3>
+
+        {% if user.is_authenticated %}
+        <div class="mb-3">
+            <a href="{% url 'reviews:review_add' product.id %}" class="btn btn-primary">
+                Написать отзыв
+            </a>
+        </div>
+        {% else %}
+        <p><a href="{% url 'users:login' %}">Войдите</a>, чтобы оставить отзыв</p>
+        {% endif %}
+
+        {% for review in product.reviews.all %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">{{ review.user.username }}</h5>
+                    <div class="text-warning">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= review.rating %}⭐{% endif %}
+                        {% endfor %}
+                        ({{ review.rating }}/5)
+                    </div>
+                </div>
+                <p class="card-text">{{ review.text }}</p>
+                <small class="text-muted">{{ review.created|date:"d.m.Y H:i" }}</small>
+            </div>
+        </div>
+        {% empty %}
+        <p>Пока нет отзывов. Будьте первым!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Профиль - Интернет-магазин{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Профиль пользователя</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Имя пользователя:</strong><br>{{ user.username }}</p>
+                        <p><strong>Email:</strong><br>{{ user.email|default:"Не указан" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Дата регистрации:</strong><br>{{ user.date_joined|date:"d.m.Y H:i" }}</p>
+                        <p><strong>Последний вход:</strong><br>{{ user.last_login|date:"d.m.Y H:i"|default:"Не входил" }}</p>
+                    </div>
+                </div>
+
+                <!-- Кнопка выхода -->
+                <div class="mt-4 pt-3 border-top">
+                    <form method="post" action="{% url 'users:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">
+                            🚪 Выйти из аккаунта
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Дополнительная информация -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Статистика</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <h4>{{ user.cart.cartitem_set.count|default:0 }}</h4>
+                        <p class="text-muted">Товаров в корзине</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>{{ user.favorite_set.count|default:0 }}</h4>
+                        <p class="text-muted">Товаров в избранном</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>{{ user.review_set.count|default:0 }}</h4>
+                        <p class="text-muted">Оставленных отзывов</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

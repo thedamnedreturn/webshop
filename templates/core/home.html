@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная страница - Интернет-магазин{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h1 class="display-4 mb-4">Добро пожаловать в наш магазин!</h1>
+        <p class="lead">Здесь вы найдете лучшие товары по выгодным ценам.</p>
+
+        <div class="mt-4">
+            <a href="{% url 'products:product_list' %}" class="btn btn-primary btn-lg me-3">🛍️ Смотреть все товары</a>
+            {% if not user.is_authenticated %}
+            <a href="{% url 'users:register' %}" class="btn btn-outline-primary btn-lg">Начать покупки</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Преимущества -->
+<div class="row mt-5">
+    <div class="col-md-4 text-center">
+        <div class="p-4">
+            <h3>🛒 Широкий ассортимент</h3>
+            <p>Тысячи товаров различных категорий</p>
+        </div>
+    </div>
+    <div class="col-md-4 text-center">
+        <div class="p-4">
+            <h3>🚚 Быстрая доставка</h3>
+            <p>Доставка по всему городу за 24 часа</p>
+        </div>
+    </div>
+    <div class="col-md-4 text-center">
+        <div class="p-4">
+            <h3>⭐ Качественный сервис</h3>
+            <p>Профессиональная поддержка 24/7</p>
+        </div>
+    </div>
+</div>
+
+<!-- Популярные товары -->
+<div class="row mt-5">
+    <div class="col-12">
+        <h2 class="text-center mb-4">🔥 Популярные товары</h2>
+
+        <div class="row">
+            {% for product in featured_products %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text flex-grow-1">{{ product.description|truncatewords:15 }}</p>
+                        <p class="card-text"><strong>${{ product.price }}</strong></p>
+                        <div class="mt-auto">
+                            <a href="{% url 'products:product_detail' product.id product.slug %}" class="btn btn-primary w-100">
+                                Подробнее
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">Товары скоро появятся...</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'products:product_list' %}" class="btn btn-outline-primary">
+                Смотреть все товары →
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Категории -->
+<div class="row mt-5">
+    <div class="col-12">
+        <h2 class="text-center mb-4">📂 Категории товаров</h2>
+        <div class="row">
+            <div class="col-md-4 text-center mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">📱 Электроника</h5>
+                        <p class="card-text">Смартфоны, ноутбуки, планшеты</p>
+                        <a href="{% url 'products:product_list_by_category' 'elektronika' %}" class="btn btn-outline-primary">Смотреть</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">👕 Одежда</h5>
+                        <p class="card-text">Футболки, джинсы, аксессуары</p>
+                        <a href="{% url 'products:product_list_by_category' 'odezhda' %}" class="btn btn-outline-primary">Смотреть</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">📚 Книги</h5>
+                        <p class="card-text">Художественная и учебная литература</p>
+                        <a href="{% url 'products:product_list_by_category' 'knigi' %}" class="btn btn-outline-primary">Смотреть</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
